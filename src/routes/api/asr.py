@@ -50,3 +50,6 @@ async def asr(
     except Exception as e:
         print("Something went wrong: ", e)
         return {"error": str(traceback.format_exc())}
+
+    finally:
+        audio_file.close()

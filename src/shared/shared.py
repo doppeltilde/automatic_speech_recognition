@@ -10,7 +10,7 @@ access_token = os.getenv("ACCESS_TOKEN", None)
 default_asr_model_name = os.getenv("DEFAULT_ASR_MODEL_NAME", "base")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-compute_type = os.getenv("COMPUTE_TYPE", "float16")
+compute_type = os.getenv("COMPUTE_TYPE", "int8")
 
 # API KEY
 api_keys_str = os.getenv("API_KEYS", "")
