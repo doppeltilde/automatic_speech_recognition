@@ -17,8 +17,8 @@ services:
     volumes:
       - models:/root/.cache/huggingface/hub:rw
     environment:
-      - DEFAULT_SUMMARIZATION_MODEL_NAME
-      - DEFAULT_TRANSLATION_MODEL_NAME
+      - DEFAULT_ASR_MODEL_NAME
+      - COMPUTE_TYPE
       - USE_API_KEYS
       - API_KEYS
     restart: unless-stopped

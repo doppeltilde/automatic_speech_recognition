@@ -5,8 +5,6 @@ import torch
 
 load_dotenv()
 
-access_token = os.getenv("ACCESS_TOKEN", None)
-
 default_asr_model_name = os.getenv("DEFAULT_ASR_MODEL_NAME", "base")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"

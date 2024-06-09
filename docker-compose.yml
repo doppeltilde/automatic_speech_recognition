@@ -8,7 +8,6 @@ services:
     environment:
       - DEFAULT_ASR_MODEL_NAME
       - COMPUTE_TYPE
-      - ACCESS_TOKEN
       - USE_API_KEYS
       - API_KEYS
     restart: unless-stopped
