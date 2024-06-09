@@ -1,0 +1,17 @@
+services:
+  automatic_speech_recognition:
+    image: ghcr.io/doppeltilde/automatic_speech_recognition:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - models:/root/.cache/huggingface/hub:rw
+    environment:
+      - DEFAULT_ASR_MODEL_NAME
+      - COMPUTE_TYPE
+      - ACCESS_TOKEN
+      - USE_API_KEYS
+      - API_KEYS
+    restart: unless-stopped
+
+volumes:
+  models:
