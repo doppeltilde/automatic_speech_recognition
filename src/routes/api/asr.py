@@ -32,7 +32,7 @@ async def asr(
             audio_file,
             beam_size=5,
             word_timestamps=True if word_timestamps else False,
-            language="en" if language is None else language,
+            language=language,
         )
 
         segment_words = []
