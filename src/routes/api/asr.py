@@ -4,15 +4,23 @@ from src.shared.shared import asr_model
 import io
 import traceback
 import time
+from src.shared.shared import LANGUAGE_CODES
 
 router = APIRouter()
 
 
-@router.post("/api/auto-asr", dependencies=[Depends(get_api_key)])
+@router.post("/api/asr", dependencies=[Depends(get_api_key)])
 async def asr(
     file: UploadFile = File(),
     model_name: str = Query(None),
+    word_timestamps: bool = Query(False),
+    language: str = Query(
+        None,
+        enum=LANGUAGE_CODES,
+        description="If not provided, will fallback to detected language.",
+    ),
 ):
+
     start_time = time.time()
     model = asr_model(model_name)
 
@@ -20,7 +28,12 @@ async def asr(
         content = await file.read()
         audio_file = io.BytesIO(content)
 
-        segments, info = model.transcribe(audio_file, beam_size=5, word_timestamps=True)
+        segments, info = model.transcribe(
+            audio_file,
+            beam_size=5,
+            word_timestamps=True if word_timestamps else False,
+            language="en" if language is None else language,
+        )
 
         segment_words = []
         entire_transcription = ""
@@ -32,10 +45,11 @@ async def asr(
                 trimmed_segment_text = segment.text
             entire_transcription += trimmed_segment_text
 
-            for word in segment.words:
-                segment_words.append(
-                    {"start": word.start, "end": word.end, "word": word.word}
-                )
+            if segment.words is not None:
+                for word in segment.words:
+                    segment_words.append(
+                        {"start": word.start, "end": word.end, "word": word.word}
+                    )
 
         return {
             "res": {
