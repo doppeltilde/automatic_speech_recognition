@@ -8,6 +8,7 @@
 ## Installation
 
 - For ease of use it's recommended to use the provided [docker-compose.yml](https://github.com/doppeltilde/automatic_speech_recognition/blob/main/docker-compose.yml).
+**CPU Support:** Use the `latest` tag.
 ```yml
 services:
   automatic_speech_recognition:
@@ -26,6 +27,34 @@ services:
 volumes:
   models:
 ```
+
+**NVIDIA GPU Support:** Use the `latest-cuda` tag.
+```yml
+services:
+  automatic_speech_recognition_cuda:
+    image: ghcr.io/doppeltilde/automatic_speech_recognition:latest-cuda
+    ports:
+      - "8000:8000"
+    volumes:
+      - models:/root/.cache/huggingface/hub:rw
+    environment:
+      - DEFAULT_ASR_MODEL_NAME
+      - COMPUTE_TYPE
+      - USE_API_KEYS
+      - API_KEYS
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
+volumes:
+  models:
+```
+
 
 - Create a `.env` file and set the preferred values.
 ```sh
