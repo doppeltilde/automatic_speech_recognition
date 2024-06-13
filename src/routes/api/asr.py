@@ -16,6 +16,7 @@ async def asr(
     file: UploadFile = File(),
     model_name: str = Query(None),
     word_timestamps: bool = Query(False),
+    beam_size: int = Query(1),
     language: str = Query(
         None,
         enum=LANGUAGE_CODES,
@@ -32,7 +33,7 @@ async def asr(
 
         segments, info = model.transcribe(
             audio_file,
-            beam_size=5,
+            beam_size=beam_size,
             word_timestamps=True if word_timestamps else False,
             language=language,
         )
