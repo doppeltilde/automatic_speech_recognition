@@ -5,6 +5,8 @@ import io
 import traceback
 import time
 from src.shared.shared import LANGUAGE_CODES
+import gc
+import torch
 
 router = APIRouter()
 
@@ -67,3 +69,6 @@ async def asr(
 
     finally:
         audio_file.close()
+        del model
+        torch.cuda.empty_cache()
+        gc.collect()
